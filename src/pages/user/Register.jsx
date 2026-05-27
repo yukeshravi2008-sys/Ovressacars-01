@@ -30,9 +30,15 @@ export default function Register() {
       toast.error('Password must be at least 6 characters')
       return
     }
+    console.log({ email: email.trim(), password, typeofPassword: typeof password })
+    if (typeof password !== 'string') {
+      toast.error('Invalid password format')
+      setLoading(false)
+      return
+    }
     setLoading(true)
     try {
-      await register(email.trim(), password, { displayName: displayName.trim(), phone: phone.trim() })
+      await register(displayName.trim(), email.trim(), password)
       toast.success('Account created successfully! Welcome!')
       navigate('/cars', { replace: true })
     } catch (err) {
@@ -53,7 +59,7 @@ export default function Register() {
       <div className="w-full max-w-[440px]">
         <div className="text-center mb-10">
           <Link to="/" className="text-3xl font-bold font-display">
-            <span className="text-text-primary">Ovressa</span><span className="text-brand">cars</span>
+            <span className="text-text-primary">Ovressa</span><span className="text-brand-gold">cars</span>
           </Link>
           <p className="text-text-muted text-sm mt-2 font-medium">Create your account</p>
         </div>
@@ -145,7 +151,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-[#1F1F1F] text-white font-bold rounded-xl hover:bg-brand transition-all duration-250 disabled:opacity-50 disabled:cursor-not-allowed text-[15px] mt-2 cursor-pointer"
+              className="w-full py-3.5 bg-brand-gold text-white font-bold rounded-xl hover:bg-brand-gold-dark transition-all duration-250 disabled:opacity-50 disabled:cursor-not-allowed text-[15px] mt-2 cursor-pointer"
             >
               {loading ? 'Creating account...' : 'Create Account'}
             </button>
@@ -154,7 +160,7 @@ export default function Register() {
           <div className="mt-8 pt-6 border-t border-border-light text-center">
             <p className="text-sm text-text-secondary">
               Already have an account?{' '}
-              <Link to="/login" className="text-brand font-semibold hover:text-brand-dark transition-colors">Sign in</Link>
+              <Link to="/login" className="text-brand-gold font-semibold hover:text-brand-gold-dark transition-colors">Sign in</Link>
             </p>
           </div>
         </div>

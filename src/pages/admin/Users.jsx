@@ -141,7 +141,7 @@ export default function Users() {
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => setSelectedUser(user)}
-                            className="p-2 text-text-secondary hover:text-brand transition-colors cursor-pointer"
+                            className="p-2 text-text-secondary hover:text-brand-gold transition-colors cursor-pointer"
                             title="View Details"
                           >
                             <MdVisibility size={16} />

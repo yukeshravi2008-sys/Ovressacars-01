@@ -1,7 +1,8 @@
 import { db, storage } from './config'
 import {
   collection, doc, getDocs, getDoc, addDoc,
-  updateDoc, deleteDoc, query, orderBy, serverTimestamp
+  updateDoc, deleteDoc, query, orderBy, serverTimestamp,
+  onSnapshot
 } from 'firebase/firestore'
 import {
   ref, uploadBytesResumable, getDownloadURL, deleteObject
@@ -46,6 +47,14 @@ export async function getAllCars() {
   } catch (error) {
     throw new Error(`Failed to fetch cars: ${error.message}`)
   }
+}
+
+export function subscribeCars(callback) {
+  const q = query(collection(db, 'cars'), orderBy('createdAt', 'desc'))
+  return onSnapshot(q, (snapshot) => {
+    const cars = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    callback(cars)
+  })
 }
 
 export async function getCarById(id) {

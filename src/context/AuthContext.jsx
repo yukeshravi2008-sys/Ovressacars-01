@@ -14,7 +14,15 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
   const [userRole, setUserRole] = useState(null)
+  const [userData, setUserData] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  const getUserName = (u, doc) => {
+    if (doc?.name) return doc.name
+    if (u?.displayName) return u.displayName
+    if (u?.email) return u.email.split('@')[0]
+    return 'User'
+  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -22,12 +30,14 @@ export function AuthProvider({ children }) {
       if (user) {
         try {
           const userDoc = await getUserDocument(user.uid)
+          setUserData(userDoc)
           setUserRole(userDoc?.role || 'user')
         } catch {
           setUserRole('user')
         }
       } else {
         setUserRole(null)
+        setUserData(null)
       }
       setLoading(false)
     })
@@ -35,8 +45,13 @@ export function AuthProvider({ children }) {
   }, [])
 
   const login = async (email, password) => {
+    console.log({ email, typeofPassword: typeof password })
+    if (typeof password !== 'string') {
+      throw new Error('auth/invalid-password-format')
+    }
     const cred = await signInWithEmailAndPassword(auth, email, password)
     const userDoc = await getUserDocument(cred.user.uid)
+    setUserData(userDoc)
     setUserRole(userDoc?.role || 'user')
     return cred
   }
@@ -50,13 +65,19 @@ export function AuthProvider({ children }) {
         email: cred.user.email || '',
       })
       setUserRole('user')
+      setUserData(null)
     } else {
       setUserRole(userDoc.role || 'user')
+      setUserData(userDoc)
     }
     return cred
   }
 
   const register = async (name, email, password) => {
+    console.log({ name, email, typeofPassword: typeof password })
+    if (typeof password !== 'string') {
+      throw new Error('auth/invalid-password-format')
+    }
     const cred = await createUserWithEmailAndPassword(auth, email, password)
     await createUserDocument(cred.user.uid, { name, email })
     setUserRole('user')
@@ -66,11 +87,16 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     await signOut(auth)
     setUserRole(null)
+    setUserData(null)
   }
+
+  const userName = currentUser ? getUserName(currentUser, userData) : null
 
   const value = {
     currentUser,
     userRole,
+    userData,
+    userName,
     loading,
     login,
     loginWithGoogle,

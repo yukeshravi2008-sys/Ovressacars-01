@@ -134,7 +134,7 @@ export default function EditCar() {
         <Sidebar />
         <main className="flex-1 p-8">
           <p className="text-danger mb-4 font-medium">{fetchError || 'Failed to load car'}</p>
-          <button onClick={() => navigate('/admin/cars')} className="px-4 py-2.5 bg-[#1F1F1F] text-white font-bold rounded-xl hover:bg-brand transition-all duration-250 cursor-pointer">
+          <button onClick={() => navigate('/admin/cars')} className="px-4 py-2.5 bg-brand-gold text-white font-bold rounded-xl hover:bg-brand-gold-dark transition-all duration-250 cursor-pointer">
             Back to Cars
           </button>
         </main>
@@ -148,7 +148,7 @@ export default function EditCar() {
       <main className="flex-1 p-6 lg:p-8">
         <button
           onClick={() => navigate('/admin/cars')}
-          className="flex items-center gap-2 text-sm text-text-secondary hover:text-brand mb-6 transition-colors cursor-pointer"
+          className="flex items-center gap-2 text-sm text-text-secondary hover:text-brand-gold mb-6 transition-colors cursor-pointer"
         >
           <MdArrowBack size={18} />
           Back to Manage Cars
@@ -333,7 +333,7 @@ export default function EditCar() {
                   </div>
                 </div>
               ) : (
-                <label className="flex flex-col items-center justify-center w-full aspect-video rounded-xl border-2 border-dashed border-border-light bg-white cursor-pointer hover:border-brand transition-colors">
+                <label className="flex flex-col items-center justify-center w-full aspect-video rounded-xl border-2 border-dashed border-border-light bg-white cursor-pointer hover:border-brand-gold transition-colors">
                   <MdCloudUpload size={40} className="text-text-muted mb-2" />
                   <p className="text-sm text-text-secondary font-medium">Drag & drop car photo here or click to browse</p>
                   <p className="text-xs text-text-muted mt-1">JPEG, PNG, WebP • max 5MB</p>
@@ -392,7 +392,7 @@ export default function EditCar() {
             <button
               type="submit"
               disabled={saving}
-              className="px-8 py-3 bg-[#1F1F1F] text-white font-bold rounded-xl hover:bg-brand transition-all duration-250 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer text-[15px] shadow-lg"
+              className="px-8 py-3 bg-brand-gold text-white font-bold rounded-xl hover:bg-brand-gold-dark transition-all duration-250 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer text-[15px] shadow-lg"
             >
               {saving && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />}
               {saving ? 'Updating...' : 'Update Car'}
@@ -401,7 +401,7 @@ export default function EditCar() {
               type="button"
               onClick={() => navigate('/admin/cars')}
               disabled={saving}
-              className="px-8 py-3 bg-white text-text-secondary font-bold border border-border-light rounded-xl hover:border-brand hover:text-brand transition-all duration-250 disabled:opacity-50 cursor-pointer"
+              className="px-8 py-3 bg-white text-text-secondary font-bold border border-border-light rounded-xl hover:border-brand-gold hover:text-brand-gold transition-all duration-250 disabled:opacity-50 cursor-pointer"
             >
               Cancel
             </button>

@@ -96,7 +96,7 @@ export default function ManageCars() {
           </div>
           <button
             onClick={() => navigate('/admin/cars/add')}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#1F1F1F] text-white font-bold rounded-xl hover:bg-brand transition-all duration-250 text-sm cursor-pointer"
+            className="flex items-center gap-2 px-5 py-2.5 bg-brand-gold text-white font-bold rounded-xl hover:bg-brand-gold-dark transition-all duration-250 text-sm cursor-pointer"
           >
             <MdAdd size={18} />
             Add New Car
@@ -149,7 +149,7 @@ export default function ManageCars() {
             <p className="text-text-muted font-medium mb-4">No cars yet. Add your first car.</p>
             <button
               onClick={() => navigate('/admin/cars/add')}
-              className="px-6 py-2.5 bg-[#1F1F1F] text-white font-bold rounded-xl hover:bg-brand transition-all duration-250 cursor-pointer"
+              className="px-6 py-2.5 bg-brand-gold text-white font-bold rounded-xl hover:bg-brand-gold-dark transition-all duration-250 cursor-pointer"
             >
               Add First Car
             </button>

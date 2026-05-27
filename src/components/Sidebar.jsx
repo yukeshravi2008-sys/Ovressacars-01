@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { MdDashboard, MdDirectionsCar, MdAddCircle, MdBookOnline, MdPeople, MdSettings, MdLogout } from 'react-icons/md'
 import { HiMenu, HiX } from 'react-icons/hi'
 import { useAuth } from '../context/AuthContext'
+import { subscribePendingCount } from '../firebase/bookingService'
 import toast from 'react-hot-toast'
 
 const sidebarLinks = [
@@ -16,9 +17,17 @@ const sidebarLinks = [
 
 export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [pendingCount, setPendingCount] = useState(0)
   const location = useLocation()
   const navigate = useNavigate()
   const { currentUser, logout } = useAuth()
+
+  useEffect(() => {
+    const unsub = subscribePendingCount((count) => {
+      setPendingCount(count)
+    })
+    return () => unsub()
+  }, [])
 
   const handleLogout = async () => {
     await logout()
@@ -45,28 +54,34 @@ export default function Sidebar() {
         <div className="p-6 border-b border-border-light">
           <Link to="/" className="text-xl font-bold font-display">
             <span className="text-text-primary">Ovressa</span>
-            <span className="text-brand">cars</span>
+            <span className="text-[#C9A84C]">cars</span>
           </Link>
-          <p className="text-xs text-text-muted mt-1.5 font-medium">Admin Portal</p>
+          <p className="text-xs text-[#C9A84C] mt-1.5 font-bold tracking-[1px] uppercase">DriveGo Admin</p>
         </div>
 
         <nav className="flex-1 py-6 px-3 space-y-1">
           {sidebarLinks.map((link) => {
             const Icon = link.icon
             const active = isActive(link.path)
+            const isBookings = link.path === '/admin/bookings'
             return (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all ${
+                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all relative ${
                   active
-                    ? 'text-brand bg-accent-light'
+                    ? 'text-brand-gold bg-accent-light'
                     : 'text-text-secondary hover:text-text-primary hover:bg-bg-section'
                 }`}
               >
                 <Icon size={20} />
                 {link.label}
+                {isBookings && pendingCount > 0 && (
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 min-w-[20px] h-5 px-1.5 bg-[#EF4444] text-white text-[11px] font-bold rounded-full flex items-center justify-center">
+                    {pendingCount}
+                  </span>
+                )}
               </Link>
             )
           })}
